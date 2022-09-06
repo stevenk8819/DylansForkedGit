@@ -10,8 +10,6 @@ public class Tester {
 		System.out.println(bloo.getShawedString());
 		System.out.println(bloo.getFilePath());
 		bloo.createTheNewSha1File();
-		String str = "\\n";
-		System.out.println(str);
 		
 	}
 }

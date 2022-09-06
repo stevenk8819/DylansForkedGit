@@ -22,9 +22,10 @@ public class Blob23 {
 		FileReader fr = new FileReader(fileName);
 		BufferedReader br = new BufferedReader(fr);
 		while(br.ready()) {
-			String line = br.readLine();
+			String line = br.readLine() +"\n";
 			fileStringed+=line;
 		}
+		fileStringed = fileStringed.substring(0, fileStringed.length()-1);
 		br.close();
 		fr.close();
 	}
