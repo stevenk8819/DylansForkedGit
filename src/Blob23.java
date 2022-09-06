@@ -26,6 +26,7 @@ public class Blob23 {
 			fileStringed+=line;
 		}
 		br.close();
+		fr.close();
 	}
 	
 	
@@ -40,6 +41,7 @@ public class Blob23 {
 		noob.createNewFile();
 		FileWriter fw = new FileWriter(newPath);
 		fw.write(fileStringed);
+		fw.close();
 	}
 	
 	
