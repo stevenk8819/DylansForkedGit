@@ -8,5 +8,8 @@ public class Tester {
 		bloo.shaTheFile();
 		System.out.println(bloo.getFileContents());
 		System.out.println(bloo.getShawedString());
+		System.out.println(bloo.getFilePath());
+		bloo.createTheNewSha1File();
+		
 	}
 }
