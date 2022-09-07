@@ -17,6 +17,8 @@ public class Tester {
 //		System.out.println(h.getPath());
 		h.addBlob("TheTextFile");
 		h.addBlob("SecondTextFile");
+		h.addBlob("thirdone");
+		h.removeBlob("SecondTextFile");
 		
 	}
 }

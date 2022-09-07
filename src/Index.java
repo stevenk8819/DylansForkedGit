@@ -1,5 +1,8 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,8 +38,22 @@ public class Index {
 		fw.close();
 	}
 	
-	public void removeBlob(String fileName) {
-		
+	public void removeBlob(String fileName) throws IOException {
+		String bigString ="";
+		FileReader fr = new FileReader(indx);
+		BufferedReader br = new BufferedReader(fr);
+		while(br.ready()) {
+			String str = br.readLine();
+			if(!str.equals(fileName + " : " + fils.get(fileName))) {
+				bigString += str + "\n";
+			}
+		}
+		br.close();
+		fr.close();
+		FileWriter fw = new FileWriter(indx);
+//		fw.write(bigString.substring(0, bigString.length()-2));
+		fw.write(bigString);
+		fw.close();
 	}
 	
 	public void clearIndexFile() throws IOException {
