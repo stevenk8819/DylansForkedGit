@@ -51,9 +51,11 @@ public class Index {
 		br.close();
 		fr.close();
 		FileWriter fw = new FileWriter(indx);
-//		fw.write(bigString.substring(0, bigString.length()-2));
-		fw.write(bigString);
+		fw.write(bigString.substring(0, bigString.length()-1));
 		fw.close();
+		File thisBlobl = new File(dir.getAbsolutePath()+"\\" + fils.get(fileName));
+		thisBlobl.delete();
+		fils.remove(fileName);
 	}
 	
 	public void clearIndexFile() throws IOException {
