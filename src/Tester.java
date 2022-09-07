@@ -11,7 +11,9 @@ public class Tester {
 //		System.out.println(bloo.getFilePath());
 //		bloo.createTheNewSha1File();
 		Index h = new Index();
-		System.out.println(h.getPath());
+//		System.out.println(h.getPath());
+		h.addBlob("TheTextFile");
+		h.addBlob("SecondTextFile");
 		
 	}
 }

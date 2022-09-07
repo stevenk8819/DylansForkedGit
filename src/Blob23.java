@@ -54,6 +54,10 @@ public class Blob23 {
 		return shawedString;
 	}
 	
+	public String getFileName() {
+		return fileName2;
+	}
+	
 	public String getFileContents() {
 		return fileStringed;
 	}
