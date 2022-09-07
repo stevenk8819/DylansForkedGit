@@ -10,7 +10,10 @@ public class Tester {
 //		System.out.println(bloo.getShawedString());
 //		System.out.println(bloo.getFilePath());
 //		bloo.createTheNewSha1File();
+		
+		
 		Index h = new Index();
+		h.clearIndexFile();
 //		System.out.println(h.getPath());
 		h.addBlob("TheTextFile");
 		h.addBlob("SecondTextFile");

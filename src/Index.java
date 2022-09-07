@@ -1,13 +1,16 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 public class Index {
 	private String path;
 	private File indx;
 	private File dir;
-	private String indexContents;
+	private HashMap<String, String> fils;
 	
 	public Index() throws IOException {
 		File fil = new File("Index.java");
@@ -17,16 +20,28 @@ public class Index {
 		indx.createNewFile();
 		dir = new File(path +"objects");
 		dir.mkdir();
-		indexContents="";
+		fils = new HashMap<String, String>();
 	}
 	
 	public void addBlob(String fileName) throws NoSuchAlgorithmException, IOException {
 		Blob23 blob = new Blob23(fileName);
 		blob.shaTheFile();
 		blob.createTheNewSha1File();
-		indexContents+= fileName +" : " + blob.getShawedString() + "\n";
+		fils.put(fileName, blob.getShawedString());
+		FileWriter fw = new FileWriter(indx, true);
+		PrintWriter pw = new PrintWriter(fw);
+		pw.write(fileName + " : " + blob.getShawedString() + "\n");
+		pw.close();
+		fw.close();
+	}
+	
+	public void removeBlob(String fileName) {
+		
+	}
+	
+	public void clearIndexFile() throws IOException {
 		FileWriter fw = new FileWriter(indx);
-		fw.write(indexContents);
+		fw.write("");
 		fw.close();
 	}
 	
