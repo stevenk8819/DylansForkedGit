@@ -38,7 +38,10 @@ public class Index {
 		fw.close();
 	}
 	
-	public void removeBlob(String fileName) throws IOException {
+	public boolean removeBlob(String fileName) throws IOException {
+		if(!fils.containsKey(fileName)) {
+			return false;
+		}
 		String bigString ="";
 		FileReader fr = new FileReader(indx);
 		BufferedReader br = new BufferedReader(fr);
@@ -56,6 +59,7 @@ public class Index {
 		File thisBlobl = new File(dir.getAbsolutePath()+"\\" + fils.get(fileName));
 		thisBlobl.delete();
 		fils.remove(fileName);
+		return true;
 	}
 	
 	public void clearIndexFile() throws IOException {
