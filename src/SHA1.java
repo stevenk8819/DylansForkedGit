@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 
 public class SHA1 {
+	
     public String GenerateHash(String input) throws NoSuchAlgorithmException {
         MessageDigest objSHA = MessageDigest.getInstance("SHA-1");
         byte[] bytSHA = objSHA.digest(input.getBytes());
