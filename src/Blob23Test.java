@@ -25,7 +25,7 @@ public class Blob23Test {
 
 	@BeforeAll
 	public static void setUpBeforeClass() throws Exception {
-		new File("Objects").mkdir();
+		new File("objects").mkdir();
 		File tester = new File("blobTest.txt");
 		BufferedWriter writeInTest = new BufferedWriter(new FileWriter(tester));
 		writeInTest.write("This is the test");
@@ -35,11 +35,21 @@ public class Blob23Test {
 
 	@AfterAll
 	public static void tearDownAfterClass() throws Exception {
+		File deleteFile = new File("blobTest.txt");
+		deleteFile.delete();
 	}
 
 	@Test
 	public void testBlob23() throws Exception {
 		//fail("Not yet implemented");
+		setUpBeforeClass();
+		boolean check = false;
+		Blob23 blobby = new Blob23("blobTest.txt");
+		if(blobby.getFileContents().equals("This is the test")) {
+			check = true;
+			assertTrue(check);
+		}
+		tearDownAfterClass();
 		
 	}
 	
@@ -57,9 +67,10 @@ public class Blob23Test {
 		//fail("Not yet implemented");
 		boolean check = false;
 		Blob23 blob = new Blob23("blobTest.txt");
+		blob.shaTheFile();
 		String str = "";
 		str = blob.getShawedString();
-		String test = getSHA1(blob.getFileContents());
+		String test = getSHA1("This is the test");
 		//System.out.println(str.length());
 		if(str.equals(test)) {
 			check = true;
