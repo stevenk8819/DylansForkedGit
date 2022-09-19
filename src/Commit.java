@@ -1,25 +1,47 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;  
+import java.time.format.DateTimeFormatter;  
 
 public class Commit {
-	private DoublyLinkedList theList;
+	private File parentPointer;
+	private File otherPointer;
 	private String pTree;
 	private String summary;
 	private String author;
 	private String date;
 	private String shawed;
 	
-	public Commit(Commit parent, String toBecomePTree, String toSummary, String toAuthor) throws NoSuchAlgorithmException {
-		theList = new DoublyLinkedList();
+	public Commit(File parent, String toBecomePTree, String toSummary, String toAuthor) throws NoSuchAlgorithmException {
+		parentPointer = parent;
+		otherPointer = null;
 		pTree = toBecomePTree;
 		summary = toSummary;
 		author = toAuthor;
-		shawed = makeHash();
+		date = ""+ java.time.LocalDate.now();//Year-Month-Day
+		shawed = GenerateHash(summary + date + author + pTree);
 	}
 	
-	public String makeHash() throws NoSuchAlgorithmException {
-		return GenerateHash(pTree + summary);
+	public void writeFile() throws IOException {
+		File toWrite = new File("./objects/" +shawed);
+		toWrite.createNewFile();
+		BufferedWriter writer = new BufferedWriter(new FileWriter(toWrite));
+		writer.write(pTree+"\n"+parentPointer.getPath()+"\n"+otherPointer.getPath()+"\n"+author+"\n"+date+"\n"+summary);
+		writer.close();
+	}
+	
+//	public String test() {
+//		return parentPointer.getPath();
+//	}
+	
+	public String getDate() {
+		return date;
 	}
 	
     public String GenerateHash(String input) throws NoSuchAlgorithmException {
