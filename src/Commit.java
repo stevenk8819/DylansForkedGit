@@ -36,9 +36,9 @@ public class Commit {
 		writer.close();
 	}
 	
-//	public String test() {
-//		return parentPointer.getPath();
-//	}
+	public String test() {
+		return parentPointer.getPath();
+	}
 	
 	public String getDate() {
 		return date;
