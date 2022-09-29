@@ -43,14 +43,7 @@ public class Git {
 		System.out.println ("G1"); 
 		Blob23 b1 = new Blob23("something.txt"); 
 		g.addBlob(b1); 
-		
-		//TESTING making tree 
-		g.makeTree(); 
-		
 		g.makeCommit(null, "TEST1", "AUTHOR1");
-		
-		
-		
 		System.out.println ("COMMIT: " + g.getCommit().getString()) ;
 		
 		
@@ -59,13 +52,8 @@ public class Git {
 		System.out.println ("G2"); 
 		Blob23 b2 = new Blob23("bar.txt"); 
 		g2.addBlob(b2); 
-		g2.makeTreeWithTree(g.getCommit()); 
-		
 		g2.makeCommit("158e66f032dd7022f153977e4f050924aea8142b", "TEST2", "AUTHOR2");
-//		
-//		
-//		
-//		System.out.println ("COMMIT: " + g2.getCommit().getString()) ;
+		System.out.println ("COMMIT: " + g2.getCommit().getString()) ;
 
 	}
 	public Git() throws IOException, NoSuchAlgorithmException{
@@ -128,7 +116,7 @@ public class Git {
 		indx.createNewFile();
 		
 	}
-	public void makeTreeWithTree(Commit parentCom) throws IOException, NoSuchAlgorithmException {
+	public void makeTreeWithTree(String parentCom) throws IOException, NoSuchAlgorithmException {
 		//index is filename : SHA
 		//tree is type : SHA : filename
 		ArrayList<String> indexList = new ArrayList<String>(); 
@@ -147,10 +135,7 @@ public class Git {
 		}
 		read.close(); 
 		System.out.println (indexList); 
-		
-		
-		
-		
+
 		//adding blobs to file 
 		for (int i = 0; i < indexList.size(); i++) {
 			
@@ -159,7 +144,7 @@ public class Git {
 			list.add("BloB : " + temp[1] + " : " + temp[0]); 
 		}
 		//adding parent tree to file 
-		String commitName = parentCom.getString(); 
+		String commitName = parentCom; 
 		File f2 = new File("objects/" + commitName); 
 		FileReader fw2 = new FileReader(f2); 
 		BufferedReader read2 = new BufferedReader(fw2); 
@@ -189,9 +174,19 @@ public class Git {
 	}
 
 	public void makeCommit(String parent, String toSummary, String toAuthor) throws NoSuchAlgorithmException, IOException {
-		c = new Commit(parent, toSummary, toAuthor);
-		c.setTree(treeName);
-		c.writeFile();
+		if (parent == null) {
+			c = new Commit(parent, toSummary, toAuthor);
+			makeTree(); 
+			c.setTree(treeName);
+			c.writeFile();
+		}
+		else {
+			c = new Commit(parent, toSummary, toAuthor);
+			makeTreeWithTree(parent); 
+			c.setTree(treeName);
+			c.writeFile();
+		}
+		
 	}
 	public Commit getCommit() {
 		return c; 
