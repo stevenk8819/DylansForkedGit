@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,8 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;  
 
 public class Commit {
-	private File parentPointer;
-	private File otherPointer;
+	private String parentPointer;
+	private String otherPointer;
 	private String pTree;
 	private String summary;
 	private String author;
@@ -22,38 +24,44 @@ public class Commit {
 	private String shawed;
 	private File thisFile; 
 	
-	public Commit(File parent, String toSummary, String toAuthor) throws NoSuchAlgorithmException, FileNotFoundException {
+	public Commit(String parent, String toSummary, String toAuthor) throws NoSuchAlgorithmException, IOException {
 //		if (parent == null) {
 //			parentPointer = null; 
 //		}
 		
-		if (parent != null) {
-			File f = new File ("test/objects/" + parent); 
-			Scanner in = new Scanner(f); 
-			String newContents = ""; 
-			newContents += in.nextLine() + "\n"; 
-			newContents += in.nextLine() + "\n"; 
-			newContents += pTree + "\n"; 
-			in.nextLine(); 
-			newContents += in.nextLine() + "\n"; 
-			newContents += in.nextLine() + "\n"; 
-			newContents += in.nextLine() + "\n"; 
-			
-			
-			PrintWriter pw = new PrintWriter (f); 
-			pw.append(newContents); 
-			pw.close(); 
-			
-		}
-		else {
-			parentPointer = parent;
-		}
 		
 		otherPointer = null;
 		summary = toSummary;
 		author = toAuthor;
 		date = ""+ java.time.LocalDate.now();//Year-Month-Day
-		shawed = GenerateHash(summary + date + author + pTree);
+		shawed = GenerateHash(summary + date + author);
+		
+		if (parent != null) {
+			shawed = GenerateHash(summary + date + author + parent);
+			File f = new File ("objects/" + parent); 
+			FileReader fw = new FileReader(f); 
+			BufferedReader in = new BufferedReader(fw); 
+//			Scanner in = new Scanner(f); 
+			String newContents = ""; 
+			newContents += in.readLine() + "\n"; 
+			newContents += in.readLine() + "\n"; 
+			newContents += shawed + "\n"; 
+			in.readLine(); 
+			newContents += in.readLine() + "\n"; 
+			newContents += in.readLine() + "\n"; 
+			newContents += in.readLine() + "\n"; 
+			
+			
+			PrintWriter pw = new PrintWriter (f); 
+			pw.append(newContents); 
+//			System.out.println ("\n" + newContents + "\n"); 
+			pw.close(); 
+			parentPointer = parent; 
+			in.close(); 
+		}
+		else {
+			parentPointer = "";
+		}
 	}
 	
 	public File getThisFile() {
@@ -99,9 +107,9 @@ public class Commit {
 		pTree = s; 
 	}
 	
-	public String test() {
-		return parentPointer.getPath();
-	}
+//	public String test() {
+//		return parentPointer.getPath();
+//	}
 	
 	public String getDate() {
 		return date;

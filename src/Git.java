@@ -57,21 +57,16 @@ public class Git {
 		
 		
 		System.out.println ("G2"); 
-		Blob23 b2 = new Blob23("something.txt"); 
+		Blob23 b2 = new Blob23("bar.txt"); 
 		g2.addBlob(b2); 
 		g2.makeTree(); 
 		
-		g2.makeCommit(g.getCommit().getThisFile(), "TEST1", "AUTHOR1");
-		
-		
-		
-		System.out.println ("COMMIT: " + g2.getCommit().getString()) ;
+		g2.makeCommit("158e66f032dd7022f153977e4f050924aea8142b", "TEST2", "AUTHOR2");
+//		
+//		
+//		
+//		System.out.println ("COMMIT: " + g2.getCommit().getString()) ;
 
-		
-		
-		
-		 
-		
 	}
 	public Git() throws IOException, NoSuchAlgorithmException{
 		
@@ -134,7 +129,7 @@ public class Git {
 		
 	}
 
-	public void makeCommit(File parent, String toSummary, String toAuthor) throws NoSuchAlgorithmException, IOException {
+	public void makeCommit(String parent, String toSummary, String toAuthor) throws NoSuchAlgorithmException, IOException {
 		c = new Commit(parent, toSummary, toAuthor);
 		c.setTree(treeName);
 		c.writeFile();
