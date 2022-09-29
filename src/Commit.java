@@ -103,7 +103,9 @@ public class Commit {
 	}
 	
 	public String getString() {
+		System.out.println ("SHAWED:" + shawed); 
 		return shawed; 
+		
 	}
 	
 	public void setTree(String s) {//setting pointer for tree of commit 

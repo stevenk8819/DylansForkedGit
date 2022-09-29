@@ -59,7 +59,7 @@ public class Git {
 		System.out.println ("G2"); 
 		Blob23 b2 = new Blob23("bar.txt"); 
 		g2.addBlob(b2); 
-		g2.makeTree(); 
+		g2.makeTreeWithTree(g.getCommit()); 
 		
 		g2.makeCommit("158e66f032dd7022f153977e4f050924aea8142b", "TEST2", "AUTHOR2");
 //		
@@ -121,6 +121,65 @@ public class Git {
 		
 		File f2 = new File ("index"); 
 		f2.delete(); 
+		File fil = new File("Index.java");
+		String path = fil.getAbsolutePath();
+		path = path.substring(0, path.length()-10);
+		File indx = new File(path +"index");
+		indx.createNewFile();
+		
+	}
+	public void makeTreeWithTree(Commit parentCom) throws IOException, NoSuchAlgorithmException {
+		//index is filename : SHA
+		//tree is type : SHA : filename
+		ArrayList<String> indexList = new ArrayList<String>(); 
+		ArrayList<String> list = new ArrayList<String>(); 
+		
+		
+		
+		
+		//reading index file 
+		File f = new File ("index"); 
+		FileReader fw = new FileReader(f); 
+		BufferedReader read = new BufferedReader(fw); 
+		while (read.ready()) {
+			String s = read.readLine(); 
+			indexList.add(s); 
+		}
+		read.close(); 
+		System.out.println (indexList); 
+		
+		
+		
+		
+		//adding blobs to file 
+		for (int i = 0; i < indexList.size(); i++) {
+			
+			String[] temp = indexList.get(i).split (" : "); 
+//			System.out.println (temp[1] + "::::" + temp[0]); 
+			list.add("BloB : " + temp[1] + " : " + temp[0]); 
+		}
+		//adding parent tree to file 
+		String commitName = parentCom.getString(); 
+		File f2 = new File("objects/" + commitName); 
+		FileReader fw2 = new FileReader(f2); 
+		BufferedReader read2 = new BufferedReader(fw2); 
+//		System.out.println ("FFFF" + commitName + "FFFF"); 
+		String parentTree = read2.readLine(); 
+		list.add("TreE : " + parentTree); 
+		
+		
+		
+		
+		
+		
+		
+		Tree t = new Tree(list); 
+		t.makeNewFile(); 
+		treeName = t.getTreeName(); 
+		System.out.println ("TreeName" + treeName); 
+		
+		File fdelete = new File ("index"); 
+		fdelete.delete(); 
 		File fil = new File("Index.java");
 		String path = fil.getAbsolutePath();
 		path = path.substring(0, path.length()-10);
