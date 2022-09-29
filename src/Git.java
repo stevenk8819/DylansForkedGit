@@ -25,6 +25,7 @@ public class Git {
 		
 		Git g = new Git(); 
 		Git g2 = new Git(); 
+		Git g3 = new Git(); 
 		
 		//TESTING pre stuff add
 		File foo = new File("something.txt");
@@ -33,10 +34,15 @@ public class Git {
 		bw.close();
 		
 		File bar = new File("bar.txt");
-		BufferedWriter writeInTest = new BufferedWriter(new FileWriter(bar));
-		writeInTest.write("bar content");
-		writeInTest.close();
+		BufferedWriter bw2 = new BufferedWriter(new FileWriter(bar));
+		bw2.write("bar content");
+		bw2.close();
 		
+		File foobar = new File("foobar.txt");
+		BufferedWriter bw3 = new BufferedWriter(new FileWriter(foobar));
+		bw3.write("foobar content");
+		bw3.close();
+//		
 		
 		
 		
@@ -54,6 +60,16 @@ public class Git {
 		g2.addBlob(b2); 
 		g2.makeCommit("158e66f032dd7022f153977e4f050924aea8142b", "TEST2", "AUTHOR2");
 		System.out.println ("COMMIT: " + g2.getCommit().getString()) ;
+		
+		
+		
+		System.out.println ("G3"); 
+		Blob23 b3 = new Blob23("foobar.txt"); 
+		g3.addBlob(b3); 
+		g3.makeCommit("eb07efaa1a9fb930969688db02a5da6c4e2aa74f", "TEST3", "AUTHOR3");
+		System.out.println ("COMMIT: " + g3.getCommit().getString()) ;
+		
+		
 
 	}
 	public Git() throws IOException, NoSuchAlgorithmException{
