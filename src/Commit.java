@@ -38,6 +38,9 @@ public class Commit {
 		
 		if (parent != null) {
 			shawed = GenerateHash(summary + date + author + parent);
+			
+			
+			//rewriting parent file 
 			File f = new File ("objects/" + parent); 
 			FileReader fw = new FileReader(f); 
 			BufferedReader in = new BufferedReader(fw); 
