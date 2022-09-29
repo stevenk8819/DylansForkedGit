@@ -37,7 +37,7 @@ public class Blob23 {
 	}
 	
 	public void createTheNewSha1File() throws IOException {
-		String newPath = filePath.replaceFirst(fileName2, "objects\\\\" + shawedString);
+		String newPath = filePath.replaceFirst(fileName2, "objects/" + shawedString);
 		File noob = new File(newPath);
 		noob.createNewFile();
 		FileWriter fw = new FileWriter(newPath);

@@ -16,6 +16,10 @@ public class Index {
 	private HashMap<String, String> fils;
 	
 	public Index() throws IOException {
+		
+	}
+	
+	public void init() throws IOException {
 		File fil = new File("Index.java");
 		path = fil.getAbsolutePath();
 		path = path.substring(0, path.length()-10);
@@ -37,6 +41,12 @@ public class Index {
 		pw.close();
 		fw.close();
 	}
+	public void addBlobByName (Blob23 b) throws NoSuchAlgorithmException, IOException {
+		Blob23 blob = b;
+		addBlob(b.getFileName());
+	}
+	
+	
 	
 	public boolean removeBlob(String fileName) throws IOException {
 		if(!fils.containsKey(fileName)) {
