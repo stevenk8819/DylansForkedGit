@@ -42,7 +42,7 @@ public class Git {
 		BufferedWriter bw3 = new BufferedWriter(new FileWriter(foobar));
 		bw3.write("foobar content");
 		bw3.close();
-//		
+		
 		
 		
 		
@@ -58,7 +58,7 @@ public class Git {
 		System.out.println ("G2"); 
 		Blob23 b2 = new Blob23("bar.txt"); 
 		g2.addBlob(b2); 
-		g2.makeCommit("158e66f032dd7022f153977e4f050924aea8142b", "TEST2", "AUTHOR2");
+		g2.makeCommit(g.getString(), "TEST2", "AUTHOR2");
 		System.out.println ("COMMIT: " + g2.getCommit().getString()) ;
 		
 		
@@ -66,7 +66,7 @@ public class Git {
 		System.out.println ("G3"); 
 		Blob23 b3 = new Blob23("foobar.txt"); 
 		g3.addBlob(b3); 
-		g3.makeCommit("eb07efaa1a9fb930969688db02a5da6c4e2aa74f", "TEST3", "AUTHOR3");
+		g3.makeCommit(g2.getString(), "TEST3", "AUTHOR3");
 		System.out.println ("COMMIT: " + g3.getCommit().getString()) ;
 		
 		
@@ -78,6 +78,10 @@ public class Git {
 		index.init();
 		
 		
+	}
+	
+	public String getString() {
+		return c.getString(); 
 	}
 	
 	public void addBlob(Blob23 b) throws NoSuchAlgorithmException, IOException {
