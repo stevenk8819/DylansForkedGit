@@ -21,10 +21,7 @@ public class Tester {
 //		h.addBlob("thirdone");
 //		h.removeBlob("SecondTextFile");
 		
-		File j = new File("objects/6b6bcc0ae63fbfb00dc13c06dab4fa2bff894882.txt");//commit tests
-		System.out.println(j.exists());
-		Commit h = new Commit(j, "a", "b", "c");
-		System.out.println(h.test());
+		
 		
 	}
 }

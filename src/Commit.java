@@ -103,7 +103,6 @@ public class Commit {
 	}
 	
 	public String getString() {
-		System.out.println ("SHAWED:" + shawed); 
 		return shawed; 
 		
 	}
