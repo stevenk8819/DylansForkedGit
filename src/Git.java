@@ -119,7 +119,10 @@ public class Git {
 
 
 	
-
+	public void edit(String fileName) throws NoSuchAlgorithmException, IOException {
+		delete(fileName); 
+		add(fileName); 
+	}
 
 
 
