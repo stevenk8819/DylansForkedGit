@@ -4,11 +4,11 @@ import java.security.NoSuchAlgorithmException;
 public class Git {
 
 	//instance variables
-	private Index index = new Index(); 
-	private String treeName; 
-	private String commitName; 
-	private Commit c; 
-	private ArrayList<String> afterDeleted = new ArrayList<String>(); 
+	Index index = new Index(); 
+	String treeName; 
+	String commitName; 
+	Commit c; 
+	ArrayList<String> afterDeleted = new ArrayList<String>(); 
 
 	//git object plan 
 	//makes an index file 
@@ -25,7 +25,8 @@ public class Git {
 
 	public static void main (String [] orangutan) throws IOException, NoSuchAlgorithmException {
 
-		Git g = new Git(); 
+
+Git g = new Git(); 
 
 		//TESTING pre stuff add
 		File foo = new File("something.txt");
@@ -47,6 +48,11 @@ public class Git {
 		BufferedWriter bw4 = new BufferedWriter(new FileWriter(stuff));
 		bw4.write("stuff content");
 		bw4.close();
+		
+		File lastFile = new File("things.txt");
+		BufferedWriter bw5 = new BufferedWriter(new FileWriter(lastFile));
+		bw5.write("things content");
+		bw5.close();
 
 
 
@@ -65,7 +71,7 @@ public class Git {
 		System.out.println ("C2"); 
 		Blob23 b2 = new Blob23("bar.txt"); 
 		g.addBlob(b2); 
-		
+
 		g.makeCommit(g.getString(), "TEST2", "AUTHOR2");
 		System.out.println ("COMMIT: " + g.getCommit().getString()) ;
 
@@ -77,21 +83,26 @@ public class Git {
 
 
 		System.out.println ("C3"); 
-		Blob23 b4 = new Blob23 ("foobar.txt"); 
-		g.addBlob(b4);
+		Blob23 b3 = new Blob23 ("foobar.txt"); 
+		g.addBlob(b3);
 		g.makeCommit(g.getString(), "TEST3", "AUTHOR3");
 		System.out.println ("COMMIT: " + g.getCommit().getString()); 
-		
-		
-		
-		
+
+
+
+
 		System.out.println ("C4"); 
-		Blob23 b3 = new Blob23("stuff.txt"); 
-		g.addBlob(b3);
+		Blob23 b4 = new Blob23("stuff.txt"); 
+		g.delete("bar.txt");
+		g.addBlob(b4);
 		g.makeCommit(g.getString(), "TEST4", "AUTHOR4");
 		System.out.println ("COMMIT: " + g.getCommit().getString()); 
 		
-		
+		System.out.println ("C5"); 
+		Blob23 b5 = new Blob23("things.txt"); 
+		g.addBlob(b5);
+		g.makeCommit(g.getString(), "TEST5", "AUTHOR5");
+		System.out.println ("COMMIT: " + g.getCommit().getString()); 
 
 	}
 
@@ -114,56 +125,84 @@ public class Git {
 
 
 
-//	public void delete(String toDelete) throws IOException {
-//		File f = new File ("index"); 
-//		BufferedWriter bw = new BufferedWriter(new FileWriter(f,true));
-//		bw.append("* " + toDelete + "\n"); 
-//		bw.close(); 
-//	}
-//	public void deleteFile(String toDelete) throws IOException {
-//		//for adding blobs to put into tree 
-//		File f = new File ("objects/blobList"); 
-//		File f2 = new File ("objects/treeList"); 
-//		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-//		BufferedWriter bw2 = new BufferedWriter(new FileWriter(f2));
-//		
-//
-//		//getting to first tree (of head)
-//		File headFile = new File("objects/head"); 
-//		BufferedReader br = new BufferedReader(new FileReader(headFile)); 
-//		String firstCommitName = br.readLine(); 
-//		BufferedReader br2 = new BufferedReader(new FileReader("objects/" + firstCommitName)); 
-//		String firstTreeName = br2.readLine(); 
-//		//		System.out.println ("FIRST TREE:" + firstTreeName); 
-//
-//		//traversal 
-//		traverseTree(firstTreeName, toDelete, "objects/blobList"); 
-//	}
-//
-//	public void traverseTree(String treeName, String deleteName, String blobListFile) throws IOException {
-//		
-//		
+
+	public void delete(String toDelete) throws IOException {
+		File f = new File ("index"); 
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f,true));
+		bw.append("* " + toDelete + "\n"); 
+		bw.close(); 
+	}
+	public void deleteFile(String toDelete) throws IOException {
+		//for adding blobs to put into tree 
+		File f = new File ("objects/blobList"); 
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+		
+
+		//getting to first tree (of head)
+		File headFile = new File("objects/head"); 
+		BufferedReader br = new BufferedReader(new FileReader(headFile)); 
+		String firstCommitName = br.readLine(); 
+		BufferedReader br2 = new BufferedReader(new FileReader("objects/" + firstCommitName)); 
+		String firstTreeName = br2.readLine(); 
+		//		System.out.println ("FIRST TREE:" + firstTreeName); 
+
+		//traversal 
+		traverseTreeForBlobs(firstTreeName, toDelete, "objects/blobList"); 
+		
+	}
+
+	public void traverseTreeForBlobs(String treeName, String deleteName, String blobListFile) throws IOException {
+		
+		
 //		System.out.println ("ADDTREELIST:" + treeName); 
 //		File f1 = new File ("objects/treeList"); 
 //		BufferedWriter bw1 = new BufferedWriter(new FileWriter(f1, true)); 
 //		bw1.append(treeName + "\n"); 
 //		bw1.close(); 
-//		
-//		
-//		
-//		BufferedReader br = new BufferedReader(new FileReader("objects/" + treeName)); 
-//		while(br.ready()) {
-//			String line = br.readLine(); 
-//			String firstFour = line.substring(0,4); 
-//
-//
-//			if (firstFour.equals("Blob")) {//if reads in blob line 
+		
+		
+		
+		BufferedReader br = new BufferedReader(new FileReader("objects/" + treeName)); 
+		while(br.ready()) {
+			String line = br.readLine(); 
+			String firstFour = line.substring(0,4); 
+
+
+			if (firstFour.equals("Blob")) {//if reads in blob line 
 //				System.out.println (line.substring(50)); 
-//				
-//				if (line.substring(50).equals(deleteName)){ //if the blob is the deleted one 
-//					System.out.println ("FOUND IT ");
+				
+				if (line.substring(50).equals(deleteName)){ //if the blob is the deleted one 
+//					System.out.println ("FOUND IT IN THIS TREE:" + treeName);
+//					System.out.println (); 
 //					
-//					//remove this tree from treeList
+					/*
+					once we find the blob, we go to the tree that has it
+					- tree called treeName
+					- then we read from the treeName to get the next Tree
+					- we add that next Tree to BloblistFile
+					
+					
+					
+					
+					
+					
+					*/
+					
+					BufferedReader in = new BufferedReader(new FileReader("objects/" + treeName)); 
+					while(in.ready()) {
+						String temp = in.readLine(); 
+						if (temp.substring(0,4).equals("Tree")) {
+//							System.out.println ("YAY" + temp.substring(4)); 
+							File f1 = new File ("objects/blobList"); 
+							BufferedWriter bw = new BufferedWriter(new FileWriter(f1, true)); 
+							bw.append(temp + "\n"); 
+							bw.close(); 
+							return; 
+						}
+					
+					}
+					
+					//remove this tree from treeList
 //					ArrayList<String> remainingTrees = new ArrayList<String>(); 
 //					BufferedReader treeListReader = new BufferedReader(new FileReader("objects/treeList")); 
 //					while(treeListReader.ready()) {
@@ -181,37 +220,34 @@ public class Git {
 //						bw.append(remainingTrees.get(i)); 
 //					}
 //					bw.close(); 
-//					
-//					
-//				}
-//				else {//if it doesn't match 
-//					File f = new File ("objects/blobList"); 
-//					BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
-//					bw.append(line.substring(7,47) + "\n"); 
-//					bw.close(); 
-//
-//				}
-//			}
-//			else if (firstFour.equals("Tree")){ //reads in a tree line
-//				
-//				
-////				System.out.println ("ADDTREELIST:" + line.substring(7,47)); 
-////				f = new File ("objects/treeList"); 
-////				bw = new BufferedWriter(new FileWriter(f, true));
-////				bw.append(line.substring(7,47)); 
-////				bw.close(); 
-//				
-//				
-//				
-//				traverseTree(line.substring(7,47), deleteName, blobListFile); 
-//				
-//			}
-//
-//		}
-//	}
+					
+					
+				}
+				else {//if it doesn't match 
+					File f = new File ("objects/blobList"); 
+					BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
+					bw.append("Blob : " + line.substring(7) + "\n"); 
+					bw.close(); 
 
+				}
+			}
+			else if (firstFour.equals("Tree")){ //reads in a tree line
+				
+				
+//				System.out.println ("ADDTREELIST:" + line.substring(7,47)); 
+//				f = new File ("objects/treeList"); 
+//				bw = new BufferedWriter(new FileWriter(f, true));
+//				bw.append(line.substring(7,47)); 
+//				bw.close(); 
+				
+				
+				
+				traverseTreeForBlobs(line.substring(7,47), deleteName, blobListFile); 
+				
+			}
 
-
+		}
+	}
 
 
 
@@ -265,8 +301,8 @@ public class Git {
 		treeName = t.getTreeName(); 
 //		System.out.println ("TREENAME:" + treeName); 
 
-		File fdelete = new File ("index"); 
-		fdelete.delete(); 
+		File f2 = new File ("index"); 
+		f2.delete(); 
 		File fil = new File("Index.java");
 		String path = fil.getAbsolutePath();
 		path = path.substring(0, path.length()-10);
@@ -281,23 +317,31 @@ public class Git {
 		ArrayList<String> list = new ArrayList<String>(); 
 
 
-
+		
 
 
 		//reading index file 
 		File f = new File ("index"); 
 		FileReader fw = new FileReader(f); 
 		BufferedReader read = new BufferedReader(fw); 
+		boolean deleting = false; 
+		
+		
+		
 		while (read.ready()) {
 			String s = read.readLine(); 
 			if (s.substring(0,1).equals("*")){
+				deleting = true; 
 //				System.out.println (s.substring(2) + "!!!!!!!"); 
-//				deleteFile(s.substring(2)); 
+				deleteFile(s.substring(2)); 
+//				BufferedReader reader = new BufferedReader(new FileReader("objects/blobList")); 
+//				while(reader.ready()) {
+//					System.out.println ("READ IN:" + reader.readLine()); 
+//				}
 			}
 			else {
 				indexList.add(s); 
 			}
-			
 		}
 		read.close(); 
 //		System.out.println (indexList); 
@@ -308,32 +352,47 @@ public class Git {
 			String[] temp = indexList.get(i).split (" : "); 
 			//			System.out.println (temp[1] + "::::" + temp[0]); 
 			list.add("Blob : " + temp[1] + " : " + temp[0]); 
+			
 		}
-		//adding parent tree to file 
-		String commitName = parentCom; 
-		File f2 = new File("objects/" + commitName); 
-		FileReader fw2 = new FileReader(f2); 
-		BufferedReader read2 = new BufferedReader(fw2); 
-		//		System.out.println ("FFFF" + commitName + "FFFF"); 
-		String parentTree = read2.readLine(); 
-		list.add("Tree : " + parentTree); 
+		
+		
+		
+		if (deleting == false) {//add the parent tree and other files
+			//adding parent tree to file 
+			String commitName = parentCom; 
+			File f2 = new File("objects/" + commitName); 
+			FileReader fw2 = new FileReader(f2); 
+			BufferedReader read2 = new BufferedReader(fw2); 
+			String parentTree = read2.readLine(); 
+			list.add("Tree : " + parentTree); 
+		}
+		else {//add files from blobList
+			ArrayList<String> temp = new ArrayList<String>(); 
+			BufferedReader afterReader = new BufferedReader(new FileReader("objects/blobList")); 
+			while(afterReader.ready()) {
+				list.add(afterReader.readLine()); 
+			}
+//			System.out.println ("\n" + list); 
+		}
+		deleteBlobList(); 
+	
 
 
+		
+		
 
-
-
-
-
+		
 		Tree t = new Tree(list); 
 		t.makeNewFile(); 
 		treeName = t.getTreeName(); 
 //		System.out.println ("TREENAME:" + treeName); 
-
 		
 		
-
+		
+		
 		File fdelete = new File ("index"); 
 		fdelete.delete(); 
+		//call delete and rewrite to tree
 		File fil = new File("Index.java");
 		String path = fil.getAbsolutePath();
 		path = path.substring(0, path.length()-10);
@@ -356,6 +415,7 @@ public class Git {
 			c.setTree(treeName);
 			c.writeFile();
 			writeToHead(c); 
+			
 		}
 
 	}
@@ -363,12 +423,22 @@ public class Git {
 		return c; 
 	}
 
+	
+	public void writeToBranches(Commit c){
+		File f = new File("objects/branches");  
+	}
+	
 	public void writeToHead(Commit c) throws IOException {
 		String content = c.getString(); 
 		File f = new File("objects/head"); 
 		BufferedWriter bw = new BufferedWriter(new FileWriter(f)); 
 		bw.write(content); 
 		bw.close(); 
+	}
+	
+	public void deleteBlobList() {
+		File f = new File("objects/blobList"); 
+		f.delete(); 
 	}
 
 
