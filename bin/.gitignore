@@ -9,6 +9,7 @@
 /Commit.class
 /DoublyLinkedList$Node.class
 /DoublyLinkedList.class
+<<<<<<< HEAD
 /.classpath
 /.gitignore
 /.project
@@ -18,3 +19,5 @@
 /index.txt
 /testFile.txt
 /GitTester.class
+=======
+>>>>>>> main
