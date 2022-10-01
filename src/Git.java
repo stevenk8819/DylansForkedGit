@@ -26,7 +26,7 @@ public class Git {
 	public static void main (String [] orangutan) throws IOException, NoSuchAlgorithmException {
 
 
-Git g = new Git(); 
+		Git g = new Git(); 
 
 		//TESTING pre stuff add
 		File foo = new File("something.txt");
