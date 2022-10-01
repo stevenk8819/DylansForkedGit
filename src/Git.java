@@ -58,54 +58,46 @@ Git g = new Git();
 
 
 
-		System.out.println ("C1"); 
+//		System.out.println ("C1"); 
 		Blob23 b1 = new Blob23("something.txt"); 
 		g.addBlob(b1); 
 		g.makeCommit(null, "TEST1", "AUTHOR1");
-		System.out.println ("COMMIT: " + g.getCommit().getString()) ;
+		System.out.println ("COMMIT1: " + g.getCommit().getString()) ;
 
-
-
-
-
-		System.out.println ("C2"); 
+		
+//		System.out.println ("C2"); 
 		Blob23 b2 = new Blob23("bar.txt"); 
 		g.addBlob(b2); 
-
 		g.makeCommit(g.getString(), "TEST2", "AUTHOR2");
-		System.out.println ("COMMIT: " + g.getCommit().getString()) ;
+		System.out.println ("COMMIT2: " + g.getCommit().getString()) ;
 
-
-		//add entry to index file 
-		//dont actually delete file 
-
-
-
-
-		System.out.println ("C3"); 
+		
+//		System.out.println ("C3"); 
 		Blob23 b3 = new Blob23 ("foobar.txt"); 
 		g.addBlob(b3);
 		g.makeCommit(g.getString(), "TEST3", "AUTHOR3");
-		System.out.println ("COMMIT: " + g.getCommit().getString()); 
+		System.out.println ("COMMIT3: " + g.getCommit().getString()); 
 
 
-
-
-		System.out.println ("C4"); 
+//		System.out.println ("C4"); 
 		Blob23 b4 = new Blob23("stuff.txt"); 
 		g.delete("bar.txt");
 		g.addBlob(b4);
 		g.makeCommit(g.getString(), "TEST4", "AUTHOR4");
-		System.out.println ("COMMIT: " + g.getCommit().getString()); 
+		System.out.println ("COMMIT4: " + g.getCommit().getString()); 
 		
-		System.out.println ("C5"); 
+		
+//		System.out.println ("C5"); 
 		Blob23 b5 = new Blob23("things.txt"); 
 		g.addBlob(b5);
+		g.delete("something.txt");
 		g.makeCommit(g.getString(), "TEST5", "AUTHOR5");
-		System.out.println ("COMMIT: " + g.getCommit().getString()); 
+		System.out.println ("COMMIT5: " + g.getCommit().getString()); 
 		
 		g.switchBranch(2); //goes to the index 2 commit (in human terms is the 3rd commit)
-
+		
+		
+		
 	}
 
 	public Index getIndex() {
