@@ -15,6 +15,9 @@ public class Index {
 	private File dir;
 	private HashMap<String, String> fils;
 	
+	public void printList() {
+		System.out.println ("LIST:" + fils); 
+	}
 	public Index() throws IOException {
 		
 	}
