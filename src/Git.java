@@ -103,6 +103,8 @@ Git g = new Git();
 		g.addBlob(b5);
 		g.makeCommit(g.getString(), "TEST5", "AUTHOR5");
 		System.out.println ("COMMIT: " + g.getCommit().getString()); 
+		
+		g.switchBranch(2); //goes to the index 2 commit (in human terms is the 3rd commit)
 
 	}
 
@@ -117,6 +119,9 @@ Git g = new Git();
 		index.init();
 		File f = new File ("objects/head"); 
 		BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+		clearBranches(); 
+		File f2 = new File("objects/branches");  
+		BufferedWriter bw2 = new BufferedWriter(new FileWriter(f2));
 
 	}
 
@@ -408,6 +413,7 @@ Git g = new Git();
 			c.setTree(treeName);
 			c.writeFile();
 			writeToHead(c); 
+			writeToBranches(c); 
 		}
 		else {
 			c = new Commit(parent, toSummary, toAuthor);
@@ -415,7 +421,7 @@ Git g = new Git();
 			c.setTree(treeName);
 			c.writeFile();
 			writeToHead(c); 
-			
+			writeToBranches(c); 
 		}
 
 	}
@@ -424,8 +430,18 @@ Git g = new Git();
 	}
 
 	
-	public void writeToBranches(Commit c){
-		File f = new File("objects/branches");  
+	public void writeToBranches(Commit c) throws IOException{
+		BufferedWriter bw = new BufferedWriter(new FileWriter("objects/branches",true)); 
+		bw.append("branchReferences : " + c.getString() + "\n"); 
+		bw.close(); 
+	}
+	
+	public void clearBranches() throws IOException{
+		File f = new File("objects/branches"); 
+		f.delete(); 
+		BufferedWriter bw = new BufferedWriter(new FileWriter("objects/branches")); 
+		bw.append(""); 
+		bw.close(); 
 	}
 	
 	public void writeToHead(Commit c) throws IOException {
@@ -433,6 +449,18 @@ Git g = new Git();
 		File f = new File("objects/head"); 
 		BufferedWriter bw = new BufferedWriter(new FileWriter(f)); 
 		bw.write(content); 
+		bw.close(); 
+	}
+	
+	public void switchBranch(int number) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader("objects/branches")); 
+		for (int i = 0; i < number; i++) {
+			br.readLine(); 
+		}
+		String s = br.readLine(); 
+		File f = new File("objects/head"); 
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f)); 
+		bw.write(s.substring(19)); 
 		bw.close(); 
 	}
 	
