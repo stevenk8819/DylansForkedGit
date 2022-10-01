@@ -25,9 +25,6 @@ public class Commit {
 	private File thisFile; 
 	
 	public Commit(String parent, String toSummary, String toAuthor) throws NoSuchAlgorithmException, IOException {
-//		if (parent == null) {
-//			parentPointer = null; 
-//		}
 		
 		
 		otherPointer = null;
